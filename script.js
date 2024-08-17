@@ -85,10 +85,42 @@ const game = (function () {
             console.log(rowStr);
         }
     }
+    function takeTurns(board, currPlayer) {
+        while (true) {
+            let row = parseInt(prompt(`${currPlayer} enter ur row pos`));
+            let col = parseInt(prompt(`${currPlayer} enter ur col pos`));
+            if (board[row][col] === -1) {
+                board[row][col] = Player[currPlayer];
+                break;
+            } else console.log("pos is already full, try again");
+        }
+    }
+
+    function evaluateBoard() {
+        let result = game.gameOver(board);
+        if (result === true) {
+            game.printBoard(board);
+            console.log("tie");
+            return false;
+        }
+        else if (result === 'x') {
+            game.printBoard(board);
+            console.log(`${name_p1} is the winner`);
+            return false;
+        }
+        else if (result === 'o') {
+            game.printBoard(board);
+            console.log(`${name_p2} is the winner`);
+            return false;
+        }
+        return true;
+    }
 
 
     return {
         printBoard,
+        takeTurns,
+        evaluateBoard,
         gameOver
     };
 
@@ -108,36 +140,9 @@ let Player = { [name_p1]: 'x', [name_p2]: 'o' };
 
 let currPlayer = name_p1;
 for (let i = 0; i < 9; i++) {
-
     game.printBoard(board);
-    while (true) {
-        let row = parseInt(prompt(`${currPlayer} enter ur row pos`));
-        let col = parseInt(prompt(`${currPlayer} enter ur col pos`));
-        if (board[row][col] === -1) {
-            board[row][col] = Player[currPlayer];
-            break;
-        } else console.log("pos is already full, try again");
-    }
-
-    let result = game.gameOver(board);
-    console.log(result);
-    if (result=== true) {
-        game.printBoard(board);
-        console.log("tie");
-        break;
-    }
-    else if (result === 'x') {
-        game.printBoard(board);
-        console.log(`${name_p1} is the winner`);
-        break;
-    }
-    else if (result === 'o') {
-        game.printBoard(board);
-        console.log(`${name_p2} is the winner`);
-        break;
-    }
+    game.takeTurns(board, currPlayer);
+    game.evaluateBoard();
     currPlayer = (currPlayer === name_p1) ? name_p2 : name_p1;
-
-
 }
 
